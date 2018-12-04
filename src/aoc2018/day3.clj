@@ -1,29 +1,31 @@
 (ns aoc2018.day3
-  (:require [aoc2018.parser :refer :all]
+  (:require [clojure.set :refer [intersection]]
+            [aoc2018.parser :refer :all]
             [aoc2018.util :refer :all]))
 
 (def parse-entries
-  (->> (let-parses [_ (parse-seq (parse+ (parse-char-if #(not= % \@)))
-                                 (parse-string "@ "))
+  (->> (let-parses [_ (parse-char \#)
+                    id (parse+ parse-digit)
+                    _ (parse-string " @ ")
                     [x, y] (parse-joined-by (parse-char \,)
                                             json-number)
                     _ (parse-string ": ")
                     [width, height] (parse-joined-by (parse-char \x)
                                                      json-number)]
-         (for [x-coord (range x (+ x width))
-               y-coord (range y (+ y height))]
-           [x-coord y-coord]))
-       parse-lines
-       (interpret-as (partial mapcat identity))))
+         {:id (apply str id)
+          :coords (for [x-coord (range x (+ x width))
+                        y-coord (range y (+ y height))]
+                    [x-coord y-coord])})
+       parse-lines))
 
 (def claimed-coords (result (run parse-entries (slurp "resources/day3.txt"))))
 
-(defn area-of-overlapping-coords [claimed-coords]
+(defn overlapping-coords-set [claimed-coords]
   (loop [[claimed-coord & rest-claimed] claimed-coords
          encountered-coords #{}
          overlapping-coords #{}]
     (cond (nil? claimed-coord)
-          (count overlapping-coords)
+          overlapping-coords
 
           (overlapping-coords claimed-coord)
           (recur rest-claimed encountered-coords overlapping-coords)
@@ -39,4 +41,18 @@
                  (conj encountered-coords claimed-coord)
                  overlapping-coords))))
 
-(area-of-overlapping-coords claimed-coords)
+;; Star 1
+(defn area-of-overlapping-coords [claimed-coords]
+  (count (overlapping-coords-set (mapcat :coords claimed-coords))))
+
+;; (area-of-overlapping-coords claimed-coords)
+
+;; Star 2
+(defn non-overlapping-id [claimed-coords]
+  (let [overlapping (overlapping-coords-set (mapcat :coords
+                                                    claimed-coords))]
+    (:id (find-first #(empty? (intersection overlapping
+                                            (set (:coords %))))
+                     claimed-coords))))
+
+(non-overlapping-id claimed-coords)
