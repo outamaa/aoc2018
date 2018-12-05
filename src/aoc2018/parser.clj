@@ -30,6 +30,9 @@
 (def parse-whitespace-char
   (parse-char-if (set " \n\r\t")))
 
+(def parse-any-char
+  (parse-char-if (constantly true)))
+
 (defn parse-any [& parsers]
   {:pre [(pos? (count parsers))]}
   (fn [input]

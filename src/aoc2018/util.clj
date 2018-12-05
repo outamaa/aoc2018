@@ -8,3 +8,10 @@
 
 (defn find-first [p xs]
   (first (filter p xs)))
+
+(defn max-frequency
+  "Returns kv-pair where k is the most frequent item and v is the frequency"
+  [xs]
+  (->> xs
+       frequencies
+       (apply max-key second)))
