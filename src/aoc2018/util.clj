@@ -38,3 +38,7 @@
 (defn avg [xs]
   (/ (reduce + xs)
      (count xs)))
+
+(defn peek-pop [q]
+  [(first q)
+   (rest q)])
