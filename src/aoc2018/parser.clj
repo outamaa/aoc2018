@@ -96,7 +96,7 @@
 (defn parse-n
   "Runs the given parser exactly n times."
   [n parser]
-  {:pre [(pos? n)]}
+  {:pre [(not (neg? n))]}
   (fn [input]
     (loop [results []
            in      input
