@@ -42,3 +42,53 @@
 (defn peek-pop [q]
   [(first q)
    (rest q)])
+
+(defn apply-n [n f]
+  (apply comp (repeat n f)))
+
+;;
+;; Deque
+;;
+
+(def empty-deque
+  {:top '()
+   :bottom '()})
+
+(defn insert-top [deque x]
+  (update deque :top conj x))
+
+(defn insert-bottom [deque x]
+  (update deque :bottom conj x))
+
+(defn empty-deque? [deque]
+  (and (empty? (:top deque))
+       (empty? (:bottom deque))))
+
+(defn- rearrange-deque [deque]
+  {:top (reverse (:bottom deque))
+   :bottom (reverse (:top deque))})
+
+(defn- pop-deque [deque end]
+  (cond (empty-deque? deque) nil
+        (empty? (end deque)) (recur (rearrange-deque deque) end)
+        :else
+        [(first (end deque))
+         (update deque end rest)]))
+
+(defn pop-top [deque]
+  (pop-deque deque :top))
+
+(defn pop-bottom [deque]
+  (pop-deque deque :bottom))
+
+(defn- peek-deque [deque end]
+  (cond (empty-deque? deque) nil
+        (empty?  (end deque)) (recur (rearrange-deque deque) end)
+        :else
+        (first (end deque))))
+
+(defn peek-top [deque]
+  (peek-deque deque :top))
+
+(defn peek-bottom [deque]
+  (peek-deque deque :bottom))
