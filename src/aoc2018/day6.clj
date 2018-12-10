@@ -23,10 +23,7 @@
        (reduce +)))
 
 (defn borders-of-infinity [locations]
-  [[(x-coord (find-min x-coord locations))
-    (y-coord (find-min y-coord locations))]
-   [(x-coord (find-max x-coord locations))
-    (y-coord (find-max y-coord locations))]])
+  (bounds locations))
 
 (defn within? [[upper-left lower-right] [x y]]
   (and (<= (x-coord upper-left) x)

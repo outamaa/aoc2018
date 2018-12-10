@@ -92,3 +92,24 @@
 
 (defn peek-bottom [deque]
   (peek-deque deque :bottom))
+
+;;
+;; 2d vec
+;;
+(defn vec2d [x y] [x y])
+(def x-coord first)
+(def y-coord second)
+
+(defn bounds [locations]
+  "Finds bounding coordinates for a seq of 2d vectors"
+  [[(x-coord (find-min x-coord locations))
+    (y-coord (find-min y-coord locations))]
+   [(x-coord (find-max x-coord locations))
+    (y-coord (find-max y-coord locations))]])
+
+(defn within-bounds?
+  [[upper-left lower-right] [x y]]
+  (and (<= (x-coord upper-left) x)
+       (<= (y-coord upper-left) y)
+       (>= (x-coord lower-right) x)
+       (>= (y-coord lower-right) y)))
