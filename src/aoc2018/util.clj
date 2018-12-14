@@ -46,6 +46,9 @@
 (defn apply-n [n f]
   (apply comp (repeat n f)))
 
+(defn sum [xs]
+  (reduce + xs))
+
 ;;
 ;; Deque
 ;;
