@@ -1,5 +1,9 @@
 (ns aoc2018.util)
 
+(defn map-vals [f m]
+  (into {} (map (fn [[k v]] [k (f v)])
+                m)))
+
 (defn tails [xs]
   (if (seq xs)
     (cons (seq xs)
@@ -20,7 +24,6 @@
    (find-max - xs))
   ([f xs]
    (apply max-key (comp - f) xs)))
-
 
 (defn max-frequency
   "Returns kv-pair where k is the most frequent item and v is the frequency"

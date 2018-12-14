@@ -1,4 +1,4 @@
-(ns aoc2018.day10
+(ns aoc2018.day11
   (:require [aoc2018.parser :refer :all]
             [aoc2018.util :refer :all]))
 
