@@ -33,14 +33,11 @@
               (group-by first rules))
     true))
 
-#_(defn match-rule [rule-tree rule]
-  (get-in rule-tree rule))
 (defn match-rule [rules rule]
   (boolean (rules rule)))
 
 (def pots-and-rules (result (run parse-initial-state (slurp "resources/day12.txt"))))
 (def pots (:pots pots-and-rules))
-#_(def rules (rule-tree (:rules pots-and-rules)))
 (def rules (:rules pots-and-rules))
 
 (defn neighbors [pot pots]
